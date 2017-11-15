@@ -94,7 +94,7 @@ void main() {
 	string s;
 	char c;
 	int num;//°¹¼ö
-	vector<char> v1;
+	vector<char> v;
 	/*if (in.is_open()) 
 	{
 		in >> num;
@@ -118,8 +118,9 @@ void main() {
 	fstream fin("input.txt", fstream::in);
 	while (fin >> noskipws >> ch) {
 		if(ch!=' '&&ch!='\n')
-		v1.push_back(ch); // Or whatever
+		v.push_back(ch); // Or whatever
 	}
-	for (int i = 0; i < v1.size(); i++)
-		cout << v1[i] << endl;
+	for (int i = 0; i < v.size(); i++)
+		cout << v[i] << endl;
+	num = v[0];
 }
