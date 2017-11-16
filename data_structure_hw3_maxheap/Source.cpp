@@ -14,7 +14,14 @@ public:
 	HeapNode(int k = 0) :key(k) {}
 	void setKey(int k) { key = k; }
 	int getKey() { return key; }
-	void display() { printf("%d", key); }
+	void display() {
+		//printf("%d", key);
+		//if (key > 64 && key < 91)//대문자인경우
+		//	cout<<(char)tolower(key);
+		//else if (key > 96 && key < 123)//소문자인경우
+		//	cout<<(char)toupper(key);
+		cout << (char)key;
+	}
 };
 class MaxHeap {
 	HeapNode node[MAX_ELEMENT];//요소의 배열
@@ -61,8 +68,8 @@ public:
 		node[parent] = last;//마지막 노드를 최종 위치에 저장
 		return item;//루트 노드 반환
 	}
-	HeapNode find() { return node[1]; }
 
+	HeapNode find() { return node[1]; }
 	void display() {
 		for (int i = 1, level = 1; i <= size; i++) {
 			if (i == level) {
@@ -93,6 +100,7 @@ public:
 					printf("\n    ");
 					level *= 2;
 				}
+				
 				node[i].display();
 			}
 			printf("\n---------------------------------");
@@ -103,14 +111,21 @@ public:
 				if (i == level) {
 					
 					printf("\n");
-					for (int j = 0; j < 127/level; j++)
+					for (int j = 0; j < 31/level; j++)
 					{
-						cout << "a";
+						cout << " ";
 					}
 					level *= 2;
+					node[i].display();
 				}
+				else {
+					for (int j = 0; j < 31 * 2 *2/ level ; j++)
+					{
+						cout << " ";
+					}
 
-				node[i].display();
+					node[i].display();
+				}
 			}
 		
 		
@@ -149,17 +164,21 @@ void main() {
 	MaxHeap heap;
 
 	//삽입 테스트
-	heap.insert(10);	heap.insert(5);
-	heap.insert(30);	
-	heap.insert(8);
-	heap.insert(9);	heap.insert(3);
-	heap.insert(7);
-	heap.not_rotated_form();//상태 출력
+	
+	/*heap.insert(45);
+	heap.insert(35);
+	heap.insert(23);
+	heap.insert(27);
+	heap.insert(21);
+	heap.insert(22);
+	heap.insert(4);
+	heap.insert(19);
+	heap.insert(42);
+	heap.remove();*/
 
-				   //삭제 테스트
-	/*heap.remove();	heap.display();
-	heap.remove();	heap.display();*/
-	printf("\n");
+
+	//heap.remove();	heap.display();
+	//printf("\n");
 	// 파일 읽기 준비
 	/*ifstream in("input.txt");*/
 	string s;
@@ -193,11 +212,20 @@ void main() {
 		v.push_back(ch); // Or whatever
 	}
 	//num = v[0];
+	cout <<v.size()<< endl;
 	for (int i = 0; i < v.size(); i++)
-		cout << v[i] << endl;
-	//int n1 = 63;
-	//int n2 = 2;
-	//cout << n1 / n2 << endl;
+	{
+		cout << v[i]<<" ";
+		/*if (v[i] = 'I')
+			heap.insert(v[++i]);
+		else if (v[i] = 'D')
+			cout << "oh" << endl;*/
+			//heap.remove();
+	}
+	heap.not_rotated_form();//상태 출력
+							//삭제 테스트
+
+	heap.display();
 }
 
 //1	                                   	                                   	                                                        0
