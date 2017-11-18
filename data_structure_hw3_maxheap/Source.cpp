@@ -34,7 +34,7 @@ public:
 	MaxHeap() :size(0) {}
 	bool isEmpty() { return size == 0; }
 	bool isFull() { return size == MAX_ELEMENT - 1; }
-	int** H_tree;
+	int H_tree[31][31];
 	void set_H_tree(){
 		int x;
 		if (size == 1)
@@ -127,20 +127,20 @@ public:
 		int area = 0;
 		if (size > 1 && size < 4)
 		{
-			area = 3;
+			area = 1;
 		}
 		else if (size < 8)
-			area = 7;
+			area = 3;
 		else if (size < 16)
-			area = 15;
+			area = 7;
 		else if (size < 32)
-			area = 31;
+			area = 15;
 		else if (size < 64)
-			area = 63;
+			area = 31;
 		else if (size < 128)
-			area = 127;
+			area = 63;
 		else if (size < 256)
-			area = 255;
+			area = 127;
 			for (int i = 1, level = 1; i <= size; i++) {
 				if (size == 1)
 				{
@@ -304,8 +304,8 @@ void main() {
 	cout << "non_rotate output" << endl;
 	cout << "===============================================" << endl;
 	heap.not_rotated_form();
-	heap.set_H_tree();
-	heap.H_tree_form(1, heap.center(heap.getSize()),heap.center(heap.getSize()), heap.depth(heap.getSize()), 1, 1, 1, 1);
+	//heap.set_H_tree();
+	//heap.H_tree_form(1, heap.center(heap.getSize()),heap.center(heap.getSize()), heap.depth(heap.getSize()), 1, 1, 1, 1);
 }
 
 //1	                                   	                                   	                                                        0
