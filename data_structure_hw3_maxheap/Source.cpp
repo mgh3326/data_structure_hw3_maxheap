@@ -3,7 +3,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdlib.h>
+#include <iomanip>
 using namespace std;
+
 
 #define MAX_ELEMENT 150
 #define MAX_SIZE 1000
@@ -34,7 +37,7 @@ public:
 	HeapNode& getParent(int i) { return node[i / 2]; }
 	HeapNode& getLeft(int i) { return node[i * 2]; }
 	HeapNode& getRight(int i) { return node[i * 2 + 1]; }
-
+	int getSize() { return size; }
 	void insert(int key) {
 		if (isFull())return;
 		int i = ++size;
@@ -81,37 +84,49 @@ public:
 		printf("\n---------------------------------");
 	}
 	void rotated_form() {
-		
-		if (size < 3)
+	}
+	void print(int index,int depth)//추가함
+										   // Library facilities used: iomanip, iostream, stdlib
+	{
+	
+		if (index <= size)
 		{
-			for (int i = 1, level = 2; i <= size; i++) {
-				if (i == level) {
-					printf("\n    ");
-					level *= 2;
-				}
-				node[i].display();
-			}
-			printf("\n---------------------------------");
-		}
-		else if (size < 7)
-		{
-			for (int i = 1, level = 2; i <= size; i++) {
-				if (i == level) {
-					printf("\n    ");
-					level *= 2;
-				}
-				
-				node[i].display();
-			}
-			printf("\n---------------------------------");
+			print(index*2 +1, depth + 1);
+			std::cout << std::setw(4 * depth) << ""; // Indent 4*depth spaces.
+			std::cout << (char)node[index].getKey() << std::endl;
+			print(index*2, depth + 1);
 		}
 	}
+
 	void not_rotated_form() {
+		int area = 0;
+		if (size > 1 && size < 4)
+		{
+			area = 3;
+		}
+		else if (size < 8)
+			area = 7;
+		else if (size < 16)
+			area = 15;
+		else if (size < 32)
+			area = 31;
+		else if (size < 64)
+			area = 63;
+		else if (size < 128)
+			area = 127;
+		else if (size < 256)
+			area = 255;
 			for (int i = 1, level = 1; i <= size; i++) {
+				if (size == 1)
+				{
+					cout << " ";
+					node[i].display();
+					break;
+				}
 				if (i == level) {
 					
 					printf("\n");
-					for (int j = 0; j < 31/level; j++)
+					for (int j = 0; j < area/level; j++)
 					{
 						cout << " ";
 					}
@@ -119,7 +134,7 @@ public:
 					node[i].display();
 				}
 				else {
-					for (int j = 0; j < 31 * 2 *2/ level ; j++)
+					for (int j = 0; j < area * 2 *2/ level ; j++)
 					{
 						cout << " ";
 					}
@@ -212,20 +227,35 @@ void main() {
 		v.push_back(ch); // Or whatever
 	}
 	//num = v[0];
-	cout <<v.size()<< endl;
+	//cout <<v.size()<< endl;
 	for (int i = 0; i < v.size(); i++)
 	{
-		cout << v[i]<<" ";
-		/*if (v[i] = 'I')
-			heap.insert(v[++i]);
-		else if (v[i] = 'D')
-			cout << "oh" << endl;*/
-			//heap.remove();
+		switch (v[i])
+		{
+		case 'I':
+			heap.insert(v[++i]); break;
+		case 'D':
+			heap.remove(); break;
+		default:
+			break;
+		}
+		/*if (v[i] = 'D')
+			heap.remove();*/
+		/*if (v[i] = 'I')*/
+				
 	}
-	heap.not_rotated_form();//상태 출력
+	//heap.not_rotated_form();//상태 출력
 							//삭제 테스트
-
-	heap.display();
+	
+	//heap.display();
+	cout << heap.getSize() << endl;
+	cout << "non_rotate output" << endl;
+	cout << "===============================================" << endl;
+	heap.print(1, 0);
+	cout << "non_rotate output" << endl;
+	cout << "===============================================" << endl;
+	heap.not_rotated_form();
+	
 }
 
 //1	                                   	                                   	                                                        0
