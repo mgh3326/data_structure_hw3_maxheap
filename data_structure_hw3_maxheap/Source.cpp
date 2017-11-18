@@ -19,10 +19,11 @@ public:
 	int getKey() { return key; }
 	void display() {
 		//printf("%d", key);
-		//if (key > 64 && key < 91)//대문자인경우
-		//	cout<<(char)tolower(key);
-		//else if (key > 96 && key < 123)//소문자인경우
-		//	cout<<(char)toupper(key);
+		if (key > 64 && key < 91)//대문자인경우
+			cout<<(char)(key + 32);
+		else if (key > 96 && key < 123)//소문자인경우
+			cout <<(char)(key - 32);
+		else
 		cout << (char)key;
 	}
 };
@@ -33,15 +34,37 @@ public:
 	MaxHeap() :size(0) {}
 	bool isEmpty() { return size == 0; }
 	bool isFull() { return size == MAX_ELEMENT - 1; }
+	int** H_tree;
+	void set_H_tree(){
+		int x;
+		if (size == 1)
+			x = 1;
+		else if (size < 8)
+			x = 3;
+		else if (size < 32)
+			x = 7;
+		else if (size < 128)
+			x = 15;
+		else if (size < 512)
+			x = 31;
+	int **H_tree = new int*[x];
+	for (int i = 0; i < x; ++i)//2차원 동적할당
+		H_tree[i] = new int[x];
+	//return H_tree;
+	}
 
 	HeapNode& getParent(int i) { return node[i / 2]; }
 	HeapNode& getLeft(int i) { return node[i * 2]; }
 	HeapNode& getRight(int i) { return node[i * 2 + 1]; }
 	int getSize() { return size; }
+	int V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
 	void insert(int key) {
 		if (isFull())return;
 		int i = ++size;
-
+		if (key > 64 && key < 91)//대문자인경우
+			key=(key + 32);
+		else if (key > 96 && key < 123)//소문자인경우
+			key=(key - 32);
 		//트리를 거슬러 올라가면서 부모 노드와 비교하는 과정
 		while (i != 1
 			&& key > getParent(i).getKey()) {
@@ -92,8 +115,10 @@ public:
 		if (index <= size)
 		{
 			print(index*2 +1, depth + 1);
-			std::cout << std::setw(4 * depth) << ""; // Indent 4*depth spaces.
-			std::cout << (char)node[index].getKey() << std::endl;
+			std::cout << std::setw(2 * depth) << ""; // Indent 4*depth spaces. ->2*depth
+			/*std::cout << (char)node[index].getKey() << std::endl;*/
+			node[index].display();
+			cout << endl;
 			print(index*2, depth + 1);
 		}
 	}
@@ -146,7 +171,31 @@ public:
 		
 		printf("\n---------------------------------");
 	}
-	void H_tree_form() {
+	
+	void H_tree_form(int index, int i, int j, int d, int U, int D, int R, int L) {
+		
+	
+		if (index > size) return;
+		H_tree[i][j] = node[index].getKey();//unable
+		if (2 * index <= size) {
+			H_tree[i + d*V[L][0]][j + d*V[L][1]] = node[2 * index - 1].getKey();
+			H_tree_form(4*index,i+d*(V[L][0]+V[U][0]),
+				j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
+			H_tree_form(4 * index + 1, i + d*(V[L][0] + V[D][0]),
+				j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
+		}
+		if (2 * index + 1 <= size) {
+			H_tree[i + d*V[R][0]][j + d*V[R][1]] = node[2 * index].getKey();
+			H_tree_form(4 * index + 2, i + d*(V[R][0] + V[D][0]),
+				j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
+			H_tree_form(4 * index + 3, i + d*(V[R][0] + V[U][0]),
+				j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
+		}
+		}
+
+	int center(int n) { return n <= 1 ? 0 : 2 * center(n / 4) + 1; }
+
+	int depth(int n) { return n <= 7 ? 1 : 2 * depth(n / 4); }
 	/*	str[] = "123456789ABCDEFGHIJKLMNOPQRSTUV";
 		V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
 		H(node, i, j, d, U, D, R, L)
@@ -172,7 +221,7 @@ public:
 		depth(n) { return n <= 7 ? 1 : 2 * depth(n / 4); }
 		CALL  H(1, center(n), center(n), depth(n), N, S, E, W);*/
 
-	}
+	
 };
 //주함수
 void main() {
@@ -255,7 +304,8 @@ void main() {
 	cout << "non_rotate output" << endl;
 	cout << "===============================================" << endl;
 	heap.not_rotated_form();
-	
+	heap.set_H_tree();
+	heap.H_tree_form(1, heap.center(heap.getSize()),heap.center(heap.getSize()), heap.depth(heap.getSize()), 1, 1, 1, 1);
 }
 
 //1	                                   	                                   	                                                        0
