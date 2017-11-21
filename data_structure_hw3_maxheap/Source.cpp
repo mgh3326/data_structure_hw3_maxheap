@@ -11,12 +11,14 @@ using namespace std;
 #define MAX_ELEMENT 150
 #define MAX_SIZE 1000
 char inputString[MAX_SIZE];
+int H_tree[32][32];// int char?
 class HeapNode {
 	int key;//key값
 public:
 	HeapNode(int k = 0) :key(k) {}
 	void setKey(int k) { key = k; }
 	int getKey() { return key; }
+
 	void display() {
 		//printf("%d", key);
 		if (key > 64 && key < 91)//대문자인경우
@@ -34,30 +36,13 @@ public:
 	MaxHeap() :size(0) {}
 	bool isEmpty() { return size == 0; }
 	bool isFull() { return size == MAX_ELEMENT - 1; }
-	int H_tree[31][31];
-	void set_H_tree(){
-		int x;
-		if (size == 1)
-			x = 1;
-		else if (size < 8)
-			x = 3;
-		else if (size < 32)
-			x = 7;
-		else if (size < 128)
-			x = 15;
-		else if (size < 512)
-			x = 31;
-	int **H_tree = new int*[x];
-	for (int i = 0; i < x; ++i)//2차원 동적할당
-		H_tree[i] = new int[x];
-	//return H_tree;
-	}
+	
 
 	HeapNode& getParent(int i) { return node[i / 2]; }
 	HeapNode& getLeft(int i) { return node[i * 2]; }
 	HeapNode& getRight(int i) { return node[i * 2 + 1]; }
 	int getSize() { return size; }
-	int V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
+	
 	void insert(int key) {
 		if (isFull())return;
 		int i = ++size;
@@ -169,33 +154,103 @@ public:
 			}
 		
 		
-		printf("\n---------------------------------");
+		//printf("\n---------------------------------");
+	}
+	void H_function() {
+		vector< vector<char> > v;
+		vector<char> element;
+		int x;
+		if (size == 1)
+			x = 1;
+		else if (size < 8)
+			x = 3;
+		else if (size < 32)
+			x = 7;
+		else if (size < 128)
+			x = 15;
+		else if (size < 512)
+			x = 31;
+		cout << x << endl;
+		cout << size << endl;
+		int row = x;
+		int column = x;
+		//초기화
+		vector<std::vector<char> > m_sampleArray;
+		for (int i = 0; i < row; i++)
+		{
+			std::vector<char> element;
+			element.resize(column);
+			m_sampleArray.push_back(element);
+		}
+		//사용
+		for (int i = 0; i < row; i++)
+		{
+			for (int j = 0; j < column; j++)
+			{
+				// Use!!    
+				m_sampleArray[i][j] = '#';
+			}
+		}
+		//출력
+		for (int i = 0; i < row; i++)
+		{
+			for (int j = 0; j < column; j++)
+			{
+				// Use!!    
+				cout << m_sampleArray[i][j];
+			}
+			cout << endl;
+		}
 	}
 	
-	void H_tree_form(int index, int i, int j, int d, int U, int D, int R, int L) {
-		
-	
-		if (index > size) return;
-		H_tree[i][j] = node[index].getKey();//unable
-		if (2 * index <= size) {
-			H_tree[i + d*V[L][0]][j + d*V[L][1]] = node[2 * index - 1].getKey();
-			H_tree_form(4*index,i+d*(V[L][0]+V[U][0]),
-				j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
-			H_tree_form(4 * index + 1, i + d*(V[L][0] + V[D][0]),
-				j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
-		}
-		if (2 * index + 1 <= size) {
-			H_tree[i + d*V[R][0]][j + d*V[R][1]] = node[2 * index].getKey();
-			H_tree_form(4 * index + 2, i + d*(V[R][0] + V[D][0]),
-				j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
-			H_tree_form(4 * index + 3, i + d*(V[R][0] + V[U][0]),
-				j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
-		}
-		}
 
 	int center(int n) { return n <= 1 ? 0 : 2 * center(n / 4) + 1; }
 
 	int depth(int n) { return n <= 7 ? 1 : 2 * depth(n / 4); }
+	int V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
+	
+	void H(int index, int i, int j, int d, int U, int D, int R, int L)
+	{
+		if (index > size) return;
+		H_tree[i][j] = node[index].getKey();
+		//if (d > 0)
+		//{
+		//	H_tree[i + V[U][0]][j + V[U][1]] = '#';
+		//}
+		if (2 * index <= size) {
+			if (d > 0)
+			{
+				H_tree[i + V[L][0]][j + V[L][1]] = '#';
+			}
+			if( d>1)
+			{
+				H_tree[i + d*V[L][0]+V[U][0]][j + d*V[L][1]+V[U][1]] = '#';
+				H_tree[i + d*V[L][0] + V[D][0]][j + d*V[L][1] + V[D][1]] = '#';
+			}
+			H_tree[i + d*V[L][0]][j + d*V[L][1]] = node[2 * index].getKey();
+			H(4 * index, i + d*(V[L][0] + V[U][0]),
+				j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
+			H(4 * index + 1, i + d*(V[L][0] + V[D][0]),
+				j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
+		}
+		if (2 * index + 1 <= size) {
+			if (d > 0)
+			{
+				H_tree[i + V[R][0]][j + V[R][1]] = '#';
+			}
+			if(d>1)
+			{
+				H_tree[i + d*V[R][0] + V[U][0]][j + d*V[R][1] + V[U][1]] = '#';
+				H_tree[i + d*V[R][0] + V[D][0]][j + d*V[R][1] + V[D][1]] = '#';
+			}
+			H_tree[i + d*V[R][0]][j + d*V[R][1]] = node[2 * index +1 ].getKey();
+			H(4 * index + 2, i + d*(V[R][0] + V[D][0]),
+				j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
+			H(4 * index + 3, i + d*(V[R][0] + V[U][0]),
+				j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
+		}
+	}
+
 	/*	str[] = "123456789ABCDEFGHIJKLMNOPQRSTUV";
 		V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
 		H(node, i, j, d, U, D, R, L)
@@ -220,7 +275,7 @@ public:
 		center(n) { return n <= 1 ? 0 : 2 * center(n / 4) + 1; }
 		depth(n) { return n <= 7 ? 1 : 2 * depth(n / 4); }
 		CALL  H(1, center(n), center(n), depth(n), N, S, E, W);*/
-
+	//void H_function();
 	
 };
 //주함수
@@ -304,6 +359,24 @@ void main() {
 	cout << "non_rotate output" << endl;
 	cout << "===============================================" << endl;
 	heap.not_rotated_form();
+	cout <<endl<< "===============================================" << endl;
+	heap.H(1, heap.center(heap.getSize()), heap.center(heap.getSize()), heap.depth(heap.getSize()), 0, 1, 2, 3);
+	for (int i = 0; i < 32; i++)
+	{
+		for (int j = 0; j < 32; j++)
+		{
+			if (H_tree[i][j] > 64 && H_tree[i][j] < 91)//대문자인경우
+				cout << (char)(H_tree[i][j] + 32)<< ' ';
+			else if (H_tree[i][j] > 96 && H_tree[i][j] < 123)//소문자인경우
+				cout << (char)(H_tree[i][j] - 32)<< ' ';
+			else
+				cout << (char)H_tree[i][j]<< ' ';
+			//cout << H_tree[i][j] << ' ';
+
+		}
+		cout << endl;
+	}
+	//heap.H_function();
 	//heap.set_H_tree();
 	//heap.H_tree_form(1, heap.center(heap.getSize()),heap.center(heap.getSize()), heap.depth(heap.getSize()), 1, 1, 1, 1);
 }
@@ -325,3 +398,15 @@ void main() {
 //4는 31칸,63칸
 //2는 63칸,127칸
 //1은 127칸
+
+//H_Tree
+/*
+http://blog.naver.com/salinokl/220522345552
+n : 0 >> 1 >> 1 >> 1
+	1 >> 3 >> 7 >> 3
+	2 >> 7 >> 31 >> 5
+	3 >> 15 >>  127 >> 7
+	4 >> 31 >>  511 >> 9 ??
+	2의 (n+1)승 빼기 1인가보다
+	곱하기 4 에다가 + 3이네
+*/
