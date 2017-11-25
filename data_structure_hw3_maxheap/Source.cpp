@@ -5,13 +5,19 @@
 #include <vector>
 #include <stdlib.h>
 #include <iomanip>
+#include <math.h>
 using namespace std;
 
 
 #define MAX_ELEMENT 150
-#define MAX_SIZE 1000
-char inputString[MAX_SIZE];
+//#define MAX_SIZE 1000
+//char inputString[MAX_SIZE];
+int sizeX=5;
+int sizeY=5;
 int H_tree[32][32];// int char?
+//int** ary = new int*[sizeX];
+//for (int i = 0; i < sizeY; ++i)
+//	ary[i] = new int[sizeY];
 class HeapNode {
 	int key;//key값
 public:
@@ -62,7 +68,7 @@ public:
 		if (isEmpty())return NULL;
 		HeapNode item = node[1];//루트노드(꺼낼 요소)
 		HeapNode last = node[size--];
-		int parent = 1;
+		int parent = 1;//parent를 root로 바꾸는게 더 이쁠거 같다.
 		int child = 2;
 		while (child <= size) {
 			//현재 노드의 자식 노드 중 더 큰 자식노드를 찾음
@@ -93,7 +99,7 @@ public:
 	}
 	void rotated_form() {
 	}
-	void print(int index,int depth)//추가함
+	void print(int index=1,int depth=0)//추가함
 										   // Library facilities used: iomanip, iostream, stdlib
 	{
 	
@@ -170,6 +176,7 @@ public:
 			x = 15;
 		else if (size < 512)
 			x = 31;
+
 		cout << x << endl;
 		cout << size << endl;
 		int row = x;
@@ -220,9 +227,9 @@ public:
 		if (2 * index <= size) {
 			if (d > 0)
 			{
-				H_tree[i + V[L][0]][j + V[L][1]] = '#';
+				H_tree[i + V[L][0]][j + V[L][1]] = '#';//왼쪽
 			}
-			if( d>1)
+			if( d>1)//위아래
 			{
 				H_tree[i + d*V[L][0]+V[U][0]][j + d*V[L][1]+V[U][1]] = '#';
 				H_tree[i + d*V[L][0] + V[D][0]][j + d*V[L][1] + V[D][1]] = '#';
@@ -234,11 +241,11 @@ public:
 				j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
 		}
 		if (2 * index + 1 <= size) {
-			if (d > 0)
+			if (d > 0)//오른쪽
 			{
 				H_tree[i + V[R][0]][j + V[R][1]] = '#';
 			}
-			if(d>1)
+			if(d>1)//위아래
 			{
 				H_tree[i + d*V[R][0] + V[U][0]][j + d*V[R][1] + V[U][1]] = '#';
 				H_tree[i + d*V[R][0] + V[D][0]][j + d*V[R][1] + V[D][1]] = '#';
@@ -249,80 +256,15 @@ public:
 			H(4 * index + 3, i + d*(V[R][0] + V[U][0]),
 				j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
 		}
-	}
-
-	/*	str[] = "123456789ABCDEFGHIJKLMNOPQRSTUV";
-		V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
-		H(node, i, j, d, U, D, R, L)
-		{
-			if (node > n) return;
-			H_tree[i][j] = str[node - 1];
-			if (2 * node <= n) {
-				H_tree[i + d*V[L][0]][j + d*V[L][1]] = str[2 * node - 1];
-				H(4 * node, i + d*(V[L][0] + V[U][0]),
-					j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
-				H(4 * node + 1, i + d*(V[L][0] + V[D][0]),
-					j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
-			}
-			if (2 * node + 1 <= n) {
-				H_tree[i + d*V[R][0]][j + d*V[R][1]] = str[2 * node];
-				H(4 * node + 2, i + d*(V[R][0] + V[D][0]),
-					j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
-				H(4 * node + 3, i + d*(V[R][0] + V[U][0]),
-					j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
-			}
-		}
-		center(n) { return n <= 1 ? 0 : 2 * center(n / 4) + 1; }
-		depth(n) { return n <= 7 ? 1 : 2 * depth(n / 4); }
-		CALL  H(1, center(n), center(n), depth(n), N, S, E, W);*/
-	//void H_function();
-	
+	}	
 };
 //주함수
 void main() {
 	MaxHeap heap;
-
-	//삽입 테스트
-	
-	/*heap.insert(45);
-	heap.insert(35);
-	heap.insert(23);
-	heap.insert(27);
-	heap.insert(21);
-	heap.insert(22);
-	heap.insert(4);
-	heap.insert(19);
-	heap.insert(42);
-	heap.remove();*/
-
-
-	//heap.remove();	heap.display();
-	//printf("\n");
-	// 파일 읽기 준비
-	/*ifstream in("input.txt");*/
 	string s;
 	char c;
 	int num;//갯수
 	vector<char> v;
-	/*if (in.is_open()) 
-	{
-		in >> num;
-		cout << "노드 갯수 : " << num << endl;
-	}
-	else {
-		cout << "파일을 찾을 수 없습니다!" << endl;
-	}
-	while (!in.eof())
-	{
-		getline(in, s);
-		cout << s << endl;
-		v1.push_back(tmp);
-	}
-	vector<char> v(s.length() + 1);
-	std::copy(s.c_str(), s.c_str() + s.length() + 1, v.begin());
-	cout << v[1] << endl;
-	cout << endl;
-	in.close();*/
 	char ch;
 	fstream fin("input.txt", fstream::in);
 	fin >> noskipws >> num;
@@ -330,8 +272,6 @@ void main() {
 		if(ch!=' '&&ch!='\n')
 		v.push_back(ch); // Or whatever
 	}
-	//num = v[0];
-	//cout <<v.size()<< endl;
 	for (int i = 0; i < v.size(); i++)
 	{
 		switch (v[i])
@@ -342,28 +282,34 @@ void main() {
 			heap.remove(); break;
 		default:
 			break;
-		}
-		/*if (v[i] = 'D')
-			heap.remove();*/
-		/*if (v[i] = 'I')*/
-				
+		}		
 	}
-	//heap.not_rotated_form();//상태 출력
-							//삭제 테스트
-	
-	//heap.display();
-	cout << heap.getSize() << endl;
+	fin.close();//다 사용하였으므로 ifstream을 닫아줍니다.
+	cout <<"size : " <<heap.getSize() << endl;//사이즈 확인용 곧 삭제 예정
 	cout << "non_rotate output" << endl;
 	cout << "===============================================" << endl;
-	heap.print(1, 0);
+	heap.print();
 	cout << "non_rotate output" << endl;
 	cout << "===============================================" << endl;
 	heap.not_rotated_form();
 	cout <<endl<< "===============================================" << endl;
-	heap.H(1, heap.center(heap.getSize()), heap.center(heap.getSize()), heap.depth(heap.getSize()), 0, 1, 2, 3);
-	for (int i = 0; i < 32; i++)
+	heap.H(1, heap.center(heap.getSize()), heap.center(heap.getSize()), heap.depth(heap.getSize()), 0, 1, 2, 3);//H트리 출력
+	int size = heap.getSize();
+	int x;
+	if (size == 1)
+		x = 1;
+	else if (size < 8)
+		x = 3;
+	else if (size < 32)
+		x = 7;
+	else if (size < 128)
+		x = 15;
+	else if (size < 512)
+		x = 31;
+	
+	for (int i = 0; i < x; i++)
 	{
-		for (int j = 0; j < 32; j++)
+		for (int j = 0; j < x; j++)
 		{
 			if (H_tree[i][j] > 64 && H_tree[i][j] < 91)//대문자인경우
 				cout << (char)(H_tree[i][j] + 32)<< ' ';
@@ -371,14 +317,9 @@ void main() {
 				cout << (char)(H_tree[i][j] - 32)<< ' ';
 			else
 				cout << (char)H_tree[i][j]<< ' ';
-			//cout << H_tree[i][j] << ' ';
-
 		}
 		cout << endl;
 	}
-	//heap.H_function();
-	//heap.set_H_tree();
-	//heap.H_tree_form(1, heap.center(heap.getSize()),heap.center(heap.getSize()), heap.depth(heap.getSize()), 1, 1, 1, 1);
 }
 
 //1	                                   	                                   	                                                        0
