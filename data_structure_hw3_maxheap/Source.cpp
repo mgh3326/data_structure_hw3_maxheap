@@ -115,8 +115,8 @@ public:
 	}
 
 	void not_rotated_form() {
-		int area = 0;
-		if (size > 1 && size < 4)
+		int area = pow(2, (int)log2(size)) - 1;
+		/*if (size > 1 && size < 4)
 			area = 1;
 		else if (size < 8)
 			area = 3;
@@ -129,7 +129,7 @@ public:
 		else if (size < 128)
 			area = 63;
 		else if (size < 256)
-			area = 127;
+			area = 127;*/
 			for (int i = 1, level = 1; i <= size; i++) {
 				if (size == 1)
 				{
@@ -157,53 +157,7 @@ public:
 				}
 			}
 	}
-	void H_function() {
-		vector< vector<char> > v;
-		vector<char> element;
-		int x;
-		if (size == 1)
-			x = 1;
-		else if (size < 8)
-			x = 3;
-		else if (size < 32)
-			x = 7;
-		else if (size < 128)
-			x = 15;
-		else if (size < 512)
-			x = 31;
-
-		cout << x << endl;
-		cout << size << endl;
-		int row = x;
-		int column = x;
-		//초기화
-		vector<std::vector<char> > m_sampleArray;
-		for (int i = 0; i < row; i++)
-		{
-			std::vector<char> element;
-			element.resize(column);
-			m_sampleArray.push_back(element);
-		}
-		//사용
-		for (int i = 0; i < row; i++)
-		{
-			for (int j = 0; j < column; j++)
-			{
-				// Use!!    
-				m_sampleArray[i][j] = '#';
-			}
-		}
-		//출력
-		for (int i = 0; i < row; i++)
-		{
-			for (int j = 0; j < column; j++)
-			{
-				// Use!!    
-				cout << m_sampleArray[i][j];
-			}
-			cout << endl;
-		}
-	}
+	
 	
 
 	int center(int n) {
@@ -222,68 +176,61 @@ public:
 		//}
 
 		if (2 * index <= size) {
-			//if (d > 0)
-			//{
-			//	for(int index=1;index<d;index++)
-			//	H_tree[i + index*V[L][0]][j + index*V[L][1]] = '#';//왼쪽
-			//}
-			//if( d>1)//위아래
-			//{
-			//	for (int index = 0; index < d; index++)
-			//		H_tree[i -index + d*V[L][0] + V[U][0]][j + d*V[L][1] + V[U][1]] = '#';
-			//	for (int index = 0; index < d; index++)
-			//		H_tree[i + index + d*V[L][0] + V[D][0]][j + d*V[L][1] + V[D][1]] = '#';
-			//	
-			//}
+			if (d > 0)
+			{
+				for(int index=1;index<d;index++)
+				H_tree[i + index*V[L][0]][j + index*V[L][1]] = '#';//왼쪽
+			}
+			if( d>1)//위아래
+			{
+				for (int index = 0; index < d; index++)
+					H_tree[i -index + d*V[L][0] + V[U][0]][j + d*V[L][1] + V[U][1]] = '#';
+				for (int index = 0; index < d; index++)
+					H_tree[i + index + d*V[L][0] + V[D][0]][j + d*V[L][1] + V[D][1]] = '#';
+				
+			}
 			
 			H_tree[i + d*V[L][0]][j + d*V[L][1]] = node[2 * index].getKey();
-			if (d==0)
-			{
-				H(4 * index, i + d*(V[L][0] + V[U][0])+1,
-					j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
-				H(4 * index + 1, i + d*(V[L][0] + V[D][0])-1,
-					j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
-			}
-			else
-			{
+			
+			
 				H(4 * index, i + d*(V[L][0] + V[U][0]),
 					j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
 				H(4 * index + 1, i + d*(V[L][0] + V[D][0]),
 					j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
-			}
+			
 			
 		}
 		if (2 * index + 1 <= size) {
-			//if (d > 0)//오른쪽
-			//{
-			//	for (int index = 1; index<d; index++)
-			//	H_tree[i + index*V[R][0]][j + index*V[R][1]] = '#';
-			//}
-			//if(d>1)//위아래
-			//{
-			//	for (int index = 0; index < d; index++)
-			//		H_tree[i -index+ d*V[R][0] + V[U][0]][j + d*V[R][1] + V[U][1]] = '#';
-			//	for (int index = 0; index < d; index++)
-			//		H_tree[i +index+ d*V[R][0] + V[D][0]][j + d*V[R][1] + V[D][1]] = '#';
-			//}
+			if (d > 0)//오른쪽
+			{
+				for (int index = 1; index<d; index++)
+				H_tree[i + index*V[R][0]][j + index*V[R][1]] = '#';
+			}
+			if(d>1)//위아래
+			{
+				for (int index = 0; index < d; index++)
+					H_tree[i -index+ d*V[R][0] + V[U][0]][j + d*V[R][1] + V[U][1]] = '#';
+				for (int index = 0; index < d; index++)
+					H_tree[i +index+ d*V[R][0] + V[D][0]][j + d*V[R][1] + V[D][1]] = '#';
+			}
 			
 			H_tree[i + d*V[R][0]][j + d*V[R][1]] = node[2 * index +1 ].getKey();
-			if (d ==0)
-			{
-				H(4 * index + 2, i + d*(V[R][0] + V[D][0])-1,
-					j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
-				H(4 * index + 3, i + d*(V[R][0] + V[U][0])+1,
-					j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
-			}
-			else
-			{
+		
 				H(4 * index + 2, i + d*(V[R][0] + V[D][0]),
 					j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
 				H(4 * index + 3, i + d*(V[R][0] + V[U][0]),
 					j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
-			}
+				
 			
 		}
+		if (size > 127)
+		{
+			H_tree[4][3] = '#';
+			H_tree[4][27] = '#';
+			H_tree[10][3] = '#';
+			H_tree[10][27] = '#';
+		}
+		
 	}	
 };
 //주함수
@@ -298,7 +245,7 @@ void main() {
 	fin >> noskipws >> num;
 	while (fin >> noskipws >> ch) {
 		if(ch!=' '&&ch!='\n')
-		v.push_back(ch); // Or whatever
+		v.push_back(ch); //문자만 받도록 하였습니다.
 	}
 	for (int i = 0; i < v.size(); i++)
 	{
