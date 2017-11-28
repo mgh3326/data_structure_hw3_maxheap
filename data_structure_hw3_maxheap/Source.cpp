@@ -86,7 +86,7 @@ public:
 		return item;//루트 노드 반환
 	}
 
-	HeapNode find() { return node[1]; }
+	//HeapNode find() { return node[1]; }필요없는거 같다.
 	void display() {
 		for (int i = 1, level = 1; i <= size; i++) {
 			if (i == level) {
@@ -99,7 +99,7 @@ public:
 	}
 	void rotated_form() {
 	}
-	void print(int index=1,int depth=0)//추가함
+	void print(int index=1,int depth=0)
 										   // Library facilities used: iomanip, iostream, stdlib
 	{
 	
@@ -117,9 +117,7 @@ public:
 	void not_rotated_form() {
 		int area = 0;
 		if (size > 1 && size < 4)
-		{
 			area = 1;
-		}
 		else if (size < 8)
 			area = 3;
 		else if (size < 16)
@@ -158,9 +156,6 @@ public:
 					node[i].display();
 				}
 			}
-		
-		
-		//printf("\n---------------------------------");
 	}
 	void H_function() {
 		vector< vector<char> > v;
@@ -211,7 +206,8 @@ public:
 	}
 	
 
-	int center(int n) { return n <= 1 ? 0 : 2 * center(n / 4) + 1; }
+	int center(int n) {
+		return n <= 1 ? 0 : 2 * center(n / 4) + 1; }
 
 	int depth(int n) { return n <= 7 ? 1 : 2 * depth(n / 4); }
 	int V[4][2] = { { -1, 0 },{ 1, 0 },{ 0, 1 },{ 0, -1 } };
@@ -224,37 +220,69 @@ public:
 		//{
 		//	H_tree[i + V[U][0]][j + V[U][1]] = '#';
 		//}
+
 		if (2 * index <= size) {
-			if (d > 0)
-			{
-				H_tree[i + V[L][0]][j + V[L][1]] = '#';//왼쪽
-			}
-			if( d>1)//위아래
-			{
-				H_tree[i + d*V[L][0]+V[U][0]][j + d*V[L][1]+V[U][1]] = '#';
-				H_tree[i + d*V[L][0] + V[D][0]][j + d*V[L][1] + V[D][1]] = '#';
-			}
+			//if (d > 0)
+			//{
+			//	for(int index=1;index<d;index++)
+			//	H_tree[i + index*V[L][0]][j + index*V[L][1]] = '#';//왼쪽
+			//}
+			//if( d>1)//위아래
+			//{
+			//	for (int index = 0; index < d; index++)
+			//		H_tree[i -index + d*V[L][0] + V[U][0]][j + d*V[L][1] + V[U][1]] = '#';
+			//	for (int index = 0; index < d; index++)
+			//		H_tree[i + index + d*V[L][0] + V[D][0]][j + d*V[L][1] + V[D][1]] = '#';
+			//	
+			//}
+			
 			H_tree[i + d*V[L][0]][j + d*V[L][1]] = node[2 * index].getKey();
-			H(4 * index, i + d*(V[L][0] + V[U][0]),
-				j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
-			H(4 * index + 1, i + d*(V[L][0] + V[D][0]),
-				j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
+			if (d==0)
+			{
+				H(4 * index, i + d*(V[L][0] + V[U][0])+1,
+					j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
+				H(4 * index + 1, i + d*(V[L][0] + V[D][0])-1,
+					j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
+			}
+			else
+			{
+				H(4 * index, i + d*(V[L][0] + V[U][0]),
+					j + d*(V[L][1] + V[U][1]), d / 2, D, U, L, R);
+				H(4 * index + 1, i + d*(V[L][0] + V[D][0]),
+					j + d*(V[L][1] + V[D][1]), d / 2, U, D, R, L);
+			}
+			
 		}
 		if (2 * index + 1 <= size) {
-			if (d > 0)//오른쪽
-			{
-				H_tree[i + V[R][0]][j + V[R][1]] = '#';
-			}
-			if(d>1)//위아래
-			{
-				H_tree[i + d*V[R][0] + V[U][0]][j + d*V[R][1] + V[U][1]] = '#';
-				H_tree[i + d*V[R][0] + V[D][0]][j + d*V[R][1] + V[D][1]] = '#';
-			}
+			//if (d > 0)//오른쪽
+			//{
+			//	for (int index = 1; index<d; index++)
+			//	H_tree[i + index*V[R][0]][j + index*V[R][1]] = '#';
+			//}
+			//if(d>1)//위아래
+			//{
+			//	for (int index = 0; index < d; index++)
+			//		H_tree[i -index+ d*V[R][0] + V[U][0]][j + d*V[R][1] + V[U][1]] = '#';
+			//	for (int index = 0; index < d; index++)
+			//		H_tree[i +index+ d*V[R][0] + V[D][0]][j + d*V[R][1] + V[D][1]] = '#';
+			//}
+			
 			H_tree[i + d*V[R][0]][j + d*V[R][1]] = node[2 * index +1 ].getKey();
-			H(4 * index + 2, i + d*(V[R][0] + V[D][0]),
-				j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
-			H(4 * index + 3, i + d*(V[R][0] + V[U][0]),
-				j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
+			if (d ==0)
+			{
+				H(4 * index + 2, i + d*(V[R][0] + V[D][0])-1,
+					j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
+				H(4 * index + 3, i + d*(V[R][0] + V[U][0])+1,
+					j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
+			}
+			else
+			{
+				H(4 * index + 2, i + d*(V[R][0] + V[D][0]),
+					j + d*(V[R][1] + V[D][1]), d / 2, U, D, R, L);
+				H(4 * index + 3, i + d*(V[R][0] + V[U][0]),
+					j + d*(V[R][1] + V[U][1]), d / 2, D, U, L, R);
+			}
+			
 		}
 	}	
 };
@@ -320,8 +348,8 @@ void main() {
 		}
 		cout << endl;
 	}
+	cout <<"==="<< size << endl;
 }
-
 //1	                                   	                                   	                                                        0
 //2	                                   	                               0                                                                                                                               1
 //4	                                   0                                                               1                                                               2                                                               3
