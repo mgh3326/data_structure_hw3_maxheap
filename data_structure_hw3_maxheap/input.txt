@@ -1,16 +1,4 @@
-33
+13
 I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2 I 3 I 4 I 5 I 6 I 7 I 8 I 9
-I 1 I 2
+I a I b I c I d I e
+I A I B I C I D I E D
